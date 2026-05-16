@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bahiano Cortes - Barbearia com o estilo da Bahia!">
+  <title>Bahiano Cortes</title>
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Ícone da aba do navegador (favicon) -->
+  <link rel="icon" href="../img/bahiano-icon.ico" type="image/x-icon" sizes="32x32">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+  <!-- ============================================
+       MODAL DE AGENDAMENTO
+  ============================================ -->
+  <div id="agendamento-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📅 Agendar Horário</h2>
+        <button id="close-modal" class="close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="form-agendamento">
+          <div class="form-group">
+            <label for="nome-cliente">Nome Completo</label>
+            <input type="text" id="nome-cliente" required placeholder="Digite seu nome">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="telefone-cliente">Telefone / WhatsApp</label>
+              <input type="tel" id="telefone-cliente" required placeholder="(11) 97538-3680">
+            </div>
+            <div class="form-group">
+              <label for="email-cliente">E-mail</label>
+              <input type="email" id="email-cliente" required placeholder="seu@email.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="servico-escolhido">Serviço</label>
+            <select id="servico-escolhido" required>
+              <option value="">Carregando serviços...</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="profissional-escolhido">Profissional</label>
+            <select id="profissional-escolhido" required>
+              <option value="">Carregando profissionais...</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="data-escolhida">Data</label>
+            <input type="date" id="data-escolhida" required>
+          </div>
+
+          <div class="form-group">
+            <label>Horários Disponíveis</label>
+            <div id="horarios-container" class="horarios-grid">
+              <p class="horarios-aviso">Selecione o profissional e a data para ver os horários.</p>
+            </div>
+          </div>
+
+          <!-- Campo escondido para guardar o horário clicado -->
+          <input type="hidden" id="horario-selecionado" required>
+
+          <button type="submit" id="btn-confirmar" class="btn btn-block" disabled>Confirmar Agendamento</button>
+          <div id="agendamento-status" class="status-msg"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       CARRINHO FLUTUANTE (fica fixo no canto da tela)
+  ============================================ -->
+
+  <!-- Botão do carrinho que fica no canto inferior direito -->
+  <button class="carrinho-fab" id="btn-carrinho" aria-label="Abrir carrinho">
+    ✂️
+    <!-- Badge vermelha com a quantidade de itens -->
+    <span class="carrinho-badge" id="carrinho-badge">0</span>
+  </button>
+
+  <!-- Painel do carrinho (fica escondido até o usuário clicar) -->
+  <div class="carrinho-painel" id="carrinho-painel">
+
+    <!-- Cabeçalho do painel do carrinho -->
+    <div class="carrinho-header">
+      <h3>✂️ Seu Pedido</h3>
+      <!-- Botão X para fechar o painel -->
+      <button class="carrinho-fechar" id="carrinho-fechar">✕</button>
+    </div>
+
+    <!-- Lista de itens no carrinho (preenchida pelo JavaScript) -->
+    <ul class="carrinho-lista" id="carrinho-lista">
+      <!-- Os itens aparecem aqui dinamicamente -->
+    </ul>
+
+    <!-- Mensagem exibida quando o carrinho está vazio -->
+    <p class="carrinho-vazio" id="carrinho-vazio">Nenhum serviço selecionado 💈</p>
+
+    <!-- Rodapé do carrinho: total e botão de pedido -->
+    <div class="carrinho-footer" id="carrinho-footer" style="display:none">
+      <!-- Linha do total -->
+      <div class="carrinho-total">
+        <span>Total:</span>
+        <!-- O valor é atualizado pelo JavaScript -->
+        <strong id="carrinho-total-valor">R$ 0,00</strong>
+      </div>
+      <!-- Botão que manda o pedido pelo WhatsApp -->
+      <a href="#" class="btn btn-whatsapp btn-pedido" id="btn-pedido" target="_blank">
+        💬 Agendar pelo WhatsApp
+      </a>
+      <!-- Botão para esvaziar o carrinho -->
+      <button class="btn-limpar" id="btn-limpar">🗑️ Limpar Seleção</button>
+    </div>
+  </div>
+
+  <!-- Fundo escuro atrás do carrinho (fecha ao clicar) -->
+  <div class="carrinho-overlay" id="carrinho-overlay"></div>
+
+  <!-- HEADER / MENU DO TOPO -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <!-- Logo com imagem sem fundo -->
+      <a href="#" class="logo">
+        <img src="/img/bahiano-logo.png" alt="Bahiano Cortes Logo" class="logo-img">
+        <span class="logo-texto">Bahiano Cortes</span>
+      </a>
+
+      <!-- Botão hambúrguer para celular -->
+      <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">☰</button>
+
+      <nav>
+        <ul class="nav-list" id="nav-list">
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#produtos">Produtos</a></li>
+          <li><a href="#contato">Contato</a></li>
+          <li><a href="#" class="btn-agendar-nav" id="btn-agendar-nav">📅 Agendar</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+
+    <!-- HERO - SEÇÃO PRINCIPAL COM DESTAQUE -->
+    <section class="hero">
+      <div class="overlay"></div>
+      <div class="container hero-content">
+        <div class="badge-hero">💈 Tradição e Estilo da Bahia</div>
+        <h1>O Corte que Veio da Bahia</h1>
+        <p>Precisão, estilo e muito axé em cada corte! ✂️</p>
+        <div class="hero-btns">
+          <a href="#servicos" class="btn btn-principal">Ver Serviços</a>
+          <a href="#" class="btn btn-secundario" id="btn-agendar-hero">📅 Agendar Agora</a>
+        </div>
+      </div>
+      <!-- Logo grande flutuando no hero -->
+      <img src="/img/bahiano-logo.png" alt="Bahiano Cortes" class="hero-logo-flutuante">
+    </section>
+
+    <!-- SEÇÃO SOBRE -->
+    <section id="sobre" class="section">
+      <div class="container sobre-grid">
+        <div class="sobre-texto">
+          <span class="tag-secao">✂️ Nossa História</span>
+          <h2>Sobre a Bahiano Cortes</h2>
+          <p>
+            Nascemos com a missão de trazer o charme e o estilo baiano pra cada corte.
+            Cada navalhada é feita com precisão, carinho e os melhores produtos do mercado.
+          </p>
+          <p>
+            Seja você do Rio, de São Paulo ou lá do Nordeste. Aqui você vai sentir
+            aquele cuidado de verdade. 🌴
+          </p>
+          <div class="sobre-numeros">
+            <div class="numero-item">
+              <strong>+5.000</strong>
+              <span>Clientes satisfeitos</span>
+            </div>
+            <div class="numero-item">
+              <strong>100%</strong>
+              <span>Corte de Qualidade</span>
+            </div>
+          </div>
+          <a href="#" class="btn btn-principal" id="btn-agendar-sobre" style="margin-top:24px; display:inline-block;">📅 Agendar Horário</a>
+        </div>
+        <div class="sobre-imagem">
+          <img src="/img/BARBEARIA.png" alt="Bahiano Cortes">
+          <div class="sobre-badge">Desde 2020 💈</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO SERVIÇOS (antigo cardápio) -->
+    <section id="servicos" class="section section--alt">
+      <div class="container">
+        <span class="tag-secao">✂️ Nosso Menu</span>
+        <h2>Serviços</h2>
+        <p class="secao-sub">Escolha o seu serviço e se prepare pro melhor corte da sua vida!</p>
+
+        <!-- Filtros -->
+        <div class="filtros">
+          <button class="filtro-btn ativo" data-filtro="todos">Todos</button>
+          <button class="filtro-btn" data-filtro="cortes">Cortes</button>
+          <button class="filtro-btn" data-filtro="barba">Barba</button>
+          <button class="filtro-btn" data-filtro="combos">Combos</button>
+          <button class="filtro-btn" data-filtro="outros">Outros</button>
+        </div>
+
+        <ul class="cards" id="lista-itens"></ul>
+      </div>
+    </section>
+
+    <!-- SEÇÃO PRODUTOS (antigo bebidas) -->
+    <section id="produtos" class="section">
+      <div class="container">
+        <span class="tag-secao">🧴 Para Cuidar em Casa</span>
+        <h2>Produtos</h2>
+        <p class="secao-sub">O complemento perfeito para manter o estilo!</p>
+        <ul class="cards" id="lista-bebidas"></ul>
+      </div>
+    </section>
+
+    <!-- BANNER DESTAQUE -->
+    <section class="banner-destaque">
+      <div class="container banner-content">
+        <h2>Agende Agora pelo WhatsApp! 📲</h2>
+        <p>Atendimento rápido na sua região. Não perca seu horário!</p>
+        <a href="https://wa.me/5511975583680" target="_blank" class="btn btn-whatsapp">
+          💬 Chamar no WhatsApp
+        </a>
+      </div>
+    </section>
+
+    <!-- SEÇÃO CONTATO -->
+    <section id="contato" class="section section--alt">
+      <div class="container contato-grid">
+        <div class="contato-info">
+          <span class="tag-secao">📍 Fale Conosco</span>
+          <h2>Onde Estamos</h2>
+          <div class="info-item">
+            <span class="info-icone">📍</span>
+            <div>
+              <strong>Endereço</strong>
+              <p>Rua Amacás, 243 - Jardim Leonidas Moreira</p>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3654.9751998334177!2d-46.781678524839805!3d-23.641059178745145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5385d583c091%3A0xad498484ed2ec93!2sRua%20Amac%C3%A1s%2C%20243%20-%20Jardim%20Leonidas%20Moreira%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2005792-030!5e0!3m2!1spt-BR!2sbr!4v1778008050968!5m2!1spt-BR!2sbr"
+                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade" id="mapas"></iframe>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icone">🕐</span>
+            <div>
+              <strong>Horário</strong>
+              <p>Seg–Sex: 09h às 20h</p>
+              <p>Sáb–Dom: 09h às 18h</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <i class="fab fa-whatsapp"></i>
+            <div>
+              <strong>WhatsApp</strong>
+              <p>(11) 97558-3680</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <i class="fab fa-instagram"></i>
+            <div>
+              <strong>Instagram</strong>
+              <p>@bahiano_cortes</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="contato-form">
+          <h3>Mande uma Mensagem</h3>
+          <form class="form" novalidate id="form-contato">
+            <div class="field">
+              <label for="nome">Nome *</label>
+              <input id="nome" name="nome" type="text" required placeholder="Seu nome aqui">
+            </div>
+
+            <div class="field">
+              <label for="email">E-mail *</label>
+              <input id="email" name="email" type="email" required placeholder="seu@email.com">
+            </div>
+
+            <div class="field">
+              <label for="mensagem">Mensagem</label>
+              <textarea id="mensagem" name="mensagem" rows="4" placeholder="Escreva aqui..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-principal">Enviar Mensagem 🚀</button>
+            <p id="form-status" class="form-status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <section>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <img src="/img/bahiano-logo.png" alt="Bahiano Cortes" class="footer-logo">
+        <p>© <span id="ano"></span> Bahiano Cortes. Todos os direitos reservados. ✂️</p>
+        <div class="footer-redes">
+          <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.whatsapp.com/download?lang=pt" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://www.facebook.com/?locale=pt_BR" target="_blank"><i class="fab fa-facebook"></i></a>
+        </div>
+      </div>
+    </footer>
+  </section>
+
+  <!-- Scripts JavaScript -->
+  <section>
+    <script src="/js/dados.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+      // Abre o modal de agendamento
+      function abrirModal() {
+        document.getElementById('agendamento-modal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+
+      // Fecha o modal de agendamento
+      document.getElementById('close-modal').addEventListener('click', function () {
+        document.getElementById('agendamento-modal').classList.add('hidden');
+        document.body.style.overflow = '';
+      });
+
+      // Fecha ao clicar fora do modal
+      document.getElementById('agendamento-modal').addEventListener('click', function (e) {
+        if (e.target === this) {
+          this.classList.add('hidden');
+          document.body.style.overflow = '';
+        }
+      });
+
+      // Botões que abrem o modal
+      ['btn-agendar-nav', 'btn-agendar-hero', 'btn-agendar-sobre'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('click', function (e) { e.preventDefault(); abrirModal(); });
+      });
+
+      // Preenche os selects com dados mockados (substituir pela lógica real)
+      window.addEventListener('DOMContentLoaded', function () {
+        var servicos = ['Corte Social','Corte Degradê', 'Pézinho','Luzes', 'Progressiva', 'Barba', 'Sobrancelha', 'Corte + Sobrancelha', 'Barbaterapia', 'Platinado', 'Combo Corte + Barba + Sobrancelha'];
+        var profissionais = ['Bahiano', 'Dinho', 'Leandro'];
+
+        var selServico = document.getElementById('servico-escolhido');
+        selServico.innerHTML = '<option value="">Selecione um serviço</option>';
+        servicos.forEach(function (s) {
+          selServico.innerHTML += '<option value="' + s + '">' + s + '</option>';
+        });
+
+        var selProf = document.getElementById('profissional-escolhido');
+        selProf.innerHTML = '<option value="">Selecione um profissional</option>';
+        profissionais.forEach(function (p) {
+          selProf.innerHTML += '<option value="' + p + '">' + p + '</option>';
+        });
+
+        // Gera horários ao mudar profissional ou data
+        function gerarHorarios() {
+          var prof = document.getElementById('profissional-escolhido').value;
+          var data = document.getElementById('data-escolhida').value;
+          var container = document.getElementById('horarios-container');
+          if (!prof || !data) {
+            container.innerHTML = '<p class="horarios-aviso">Selecione o profissional e a data para ver os horários.</p>';
+            return;
+          }
+          var horarios = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
+          container.innerHTML = '';
+          horarios.forEach(function (h) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'horario-btn';
+            btn.textContent = h;
+            btn.addEventListener('click', function () {
+              document.querySelectorAll('.horario-btn').forEach(function (b) { b.classList.remove('selecionado'); });
+              btn.classList.add('selecionado');
+              document.getElementById('horario-selecionado').value = h;
+              document.getElementById('btn-confirmar').disabled = false;
+            });
+            container.appendChild(btn);
+          });
+        }
+
+        document.getElementById('profissional-escolhido').addEventListener('change', gerarHorarios);
+        document.getElementById('data-escolhida').addEventListener('change', gerarHorarios);
+
+        // Submissão do form
+        document.getElementById('form-agendamento').addEventListener('submit', function (e) {
+          e.preventDefault();
+          var status = document.getElementById('agendamento-status');
+          status.textContent = '✅ Agendamento confirmado! Entraremos em contato.';
+          status.style.color = '#55fc46';
+        });
+
+        // Ano no footer
+        var anoEl = document.getElementById('ano');
+        if (anoEl) anoEl.textContent = new Date().getFullYear();
+      });
+    </script>
+  </section>
+</body>
+
+</html>

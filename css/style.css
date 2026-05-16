@@ -1,0 +1,1369 @@
+/* =============================================
+   BAHIANO CORTES - CSS COMPLETO
+   Arquivo: css/style.css
+   ============================================= */
+
+/* ---------- VARIÁVEIS DE COR ---------- */
+:root {
+  --cor-primaria: #c8102e;       /* Vermelho principal */
+  --cor-secundaria: #1a3a6b;     /* Azul escuro */
+  --cor-azul-claro: #2b5fb5;     /* Azul destaque */
+  --cor-amarelo: #f5f5f5;        /* Branco/off-white destaque */
+  --cor-fundo: #f0f0f0;          /* Fundo claro */
+  --cor-fundo-alt: #0a0a0a;      /* Fundo escuro (seções alt) */
+  --cor-texto: #1a1a1a;          /* Texto escuro */
+  --cor-branco: #ffffff;
+  --cor-whatsapp: #25d366;       /* Verde WhatsApp */
+  --sombra: 0 10px 30px rgba(0, 0, 0, 0.15);
+  --sombra-forte: 0 20px 50px rgba(0, 0, 0, 0.35);
+  --transicao: all 0.3s ease;
+  --raio: 14px;
+}
+
+/* =============================================
+   MODAL DE AGENDAMENTO
+   ============================================= */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #111;
+  border-radius: var(--raio);
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 2px solid var(--cor-primaria);
+  box-shadow: 0 0 60px rgba(200, 16, 46, 0.4);
+  animation: fadeUp 0.35s ease;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 28px;
+  background: linear-gradient(135deg, var(--cor-primaria), #8b0000);
+  border-radius: var(--raio) var(--raio) 0 0;
+}
+
+.modal-header h2 {
+  font-family: "Bangers", cursive;
+  font-size: 1.8rem;
+  color: white;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 1.4rem;
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transicao);
+  line-height: 1;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 28px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 7px;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.92rem;
+  transition: var(--transicao);
+  appearance: none;
+}
+
+.form-group select option {
+  background: #222;
+  color: white;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--cor-primaria);
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.2);
+}
+
+/* Grade de horários */
+.horarios-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  min-height: 56px;
+  align-items: center;
+}
+
+.horarios-aviso {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.horario-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.horario-btn:hover {
+  border-color: var(--cor-primaria);
+  background: rgba(200, 16, 46, 0.15);
+  color: white;
+}
+
+.horario-btn.selecionado {
+  background: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+  color: white;
+  box-shadow: 0 0 12px rgba(200, 16, 46, 0.5);
+}
+
+/* Botão confirmar */
+.btn-block {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  padding: 15px;
+  font-size: 1rem;
+  background: linear-gradient(135deg, var(--cor-primaria), #8b0000);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transicao);
+  letter-spacing: 0.5px;
+}
+
+.btn-block:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-block:not(:disabled):hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(200, 16, 46, 0.5);
+}
+
+.status-msg {
+  margin-top: 14px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  min-height: 22px;
+  text-align: center;
+}
+
+/* =============================================
+   SISTEMA DE CARRINHO
+   ============================================= */
+
+.carrinho-fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--cor-primaria), #8b0000);
+  color: white;
+  font-size: 1.8rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(200, 16, 46, 0.5);
+  z-index: 500;
+  transition: var(--transicao);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carrinho-fab:hover {
+  transform: scale(1.12);
+  box-shadow: 0 12px 35px rgba(200, 16, 46, 0.65);
+}
+
+.carrinho-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--cor-azul-claro);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.carrinho-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 600;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.carrinho-overlay.ativo {
+  display: block;
+  opacity: 1;
+}
+
+.carrinho-painel {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 420px;
+  max-width: 100vw;
+  height: 100vh;
+  background: #111;
+  z-index: 700;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  transition: right 0.35s ease;
+  overflow: hidden;
+  border-left: 3px solid var(--cor-primaria);
+}
+
+.carrinho-painel.aberto { right: 0; }
+
+.carrinho-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, var(--cor-primaria), #8b0000);
+  color: white;
+}
+
+.carrinho-header h3 {
+  font-family: "Bangers", cursive;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  color: white;
+}
+
+.carrinho-fechar {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transicao);
+}
+
+.carrinho-fechar:hover { background: rgba(255, 255, 255, 0.35); }
+
+.carrinho-lista {
+  list-style: none;
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.carrinho-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: var(--transicao);
+}
+
+.carrinho-item:hover { background: rgba(200, 16, 46, 0.1); }
+
+.carrinho-item-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.carrinho-item-info { flex: 1; }
+
+.carrinho-item-nome {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.carrinho-item-preco {
+  font-size: 0.85rem;
+  color: var(--cor-primaria);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.carrinho-item-qtd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-qtd {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--cor-azul-claro);
+  background: transparent;
+  color: var(--cor-azul-claro);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transicao);
+  line-height: 1;
+}
+
+.btn-qtd:hover {
+  background: var(--cor-azul-claro);
+  color: white;
+}
+
+.qtd-num {
+  font-weight: 700;
+  font-size: 1rem;
+  min-width: 20px;
+  text-align: center;
+  color: white;
+}
+
+.carrinho-vazio {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.95rem;
+  padding: 40px 20px;
+}
+
+.carrinho-footer {
+  padding: 20px 24px;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  background: #0d0d0d;
+}
+
+.carrinho-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+  color: white;
+}
+
+.carrinho-total strong {
+  font-family: "Bangers", cursive;
+  font-size: 1.8rem;
+  color: var(--cor-primaria);
+  letter-spacing: 1px;
+}
+
+.btn-pedido {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  padding: 14px;
+}
+
+.btn-limpar {
+  display: block;
+  width: 100%;
+  background: none;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.btn-limpar:hover {
+  border-color: var(--cor-primaria);
+  color: var(--cor-primaria);
+}
+
+/* ---------- RESET BÁSICO ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- CORPO DA PÁGINA ---------- */
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ---------- CONTAINER ---------- */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* =============================================
+   HEADER
+   ============================================= */
+.site-header {
+  background: rgba(10, 10, 10, 0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 3px solid var(--cor-primaria);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 20px rgba(200, 16, 46, 0.2);
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: var(--transicao);
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.logo-img {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-texto {
+  font-family: "Bangers", cursive;
+  font-size: 1.6rem;
+  color: var(--cor-primaria);
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+/* ---------- NAVEGAÇÃO ---------- */
+.nav-list {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 4px;
+  transition: var(--transicao);
+  font-size: 0.92rem;
+}
+
+.nav-list a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: var(--cor-primaria);
+  left: 0;
+  bottom: 0;
+  transition: var(--transicao);
+}
+
+.nav-list a:hover {
+  color: white;
+}
+
+.nav-list a:hover::after {
+  width: 100%;
+}
+
+/* Botão "Agendar" no nav com estilo de destaque */
+.btn-agendar-nav {
+  background: var(--cor-primaria) !important;
+  color: white !important;
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+}
+
+.btn-agendar-nav:hover {
+  background: #a00d25 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(200, 16, 46, 0.4);
+}
+
+.btn-agendar-nav::after {
+  display: none !important;
+}
+
+/* ---------- BOTÃO HAMBURGER ---------- */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: 2px solid var(--cor-primaria);
+  color: var(--cor-primaria);
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px 10px;
+  transition: var(--transicao);
+}
+
+.menu-toggle:hover {
+  background: var(--cor-primaria);
+  color: white;
+}
+
+/* =============================================
+   HERO
+   ============================================= */
+.hero {
+  position: relative;
+  height: 50vh;
+  min-height: 50px;
+  background: url("barber-hero-bg.jpg") center/cover no-repeat;
+  background-color: #0d0d0d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Overlay com gradiente no tema barbearia */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(0, 0, 0, 0.75),
+    rgba(200, 16, 46, 0.25));
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  animation: fadeUp 0.9s ease;
+}
+
+.badge-hero {
+  display: inline-block;
+  background: var(--cor-primaria);
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 6px 18px;
+  border-radius: 30px;
+  margin-bottom: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero h1 {
+  font-family: "Bangers", cursive;
+  font-size: 4rem;
+  line-height: 1.1;
+  margin-bottom: 14px;
+  text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
+  letter-spacing: 3px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-logo-flutuante {
+  position: absolute;
+  right: 5%;
+  bottom: 0;
+  height: 420px;
+  width: auto;
+  object-fit: contain;
+  z-index: 1;
+  animation: flutuar 3s ease-in-out infinite;
+  filter: drop-shadow(0 20px 40px rgba(200, 16, 46, 0.4));
+  opacity: 0.92;
+}
+
+/* =============================================
+   BOTÕES
+   ============================================= */
+.btn {
+  display: inline-block;
+  padding: 13px 28px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: var(--transicao);
+  box-shadow: var(--sombra);
+}
+
+.btn-principal {
+  background: linear-gradient(135deg, var(--cor-primaria), #8b0000);
+  color: white;
+}
+
+.btn-principal:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(200, 16, 46, 0.5);
+}
+
+.btn-secundario {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.btn-secundario:hover {
+  background: white;
+  color: var(--cor-primaria);
+  transform: translateY(-3px);
+}
+
+.btn-whatsapp {
+  background: var(--cor-whatsapp);
+  color: white;
+  font-size: 1.1rem;
+  padding: 15px 35px;
+}
+
+.btn-whatsapp:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+}
+
+/* =============================================
+   SEÇÕES GENÉRICAS
+   ============================================= */
+.section {
+  padding: 80px 0;
+}
+
+.section--alt {
+  background: var(--cor-fundo-alt);
+  color: white;
+}
+
+.section--alt h2,
+.section--alt p {
+  color: white;
+}
+
+.tag-secao {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--cor-primaria), #8b0000);
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-family: "Bangers", cursive;
+  font-size: 2.8rem;
+  color: var(--cor-primaria);
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.secao-sub {
+  color: #888;
+  margin-bottom: 35px;
+  font-size: 1rem;
+}
+
+.section--alt .secao-sub {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* =============================================
+   SEÇÃO SOBRE
+   ============================================= */
+.sobre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.sobre-texto h2 {
+  margin-top: 8px;
+}
+
+.sobre-texto p {
+  color: #555;
+  margin-bottom: 14px;
+}
+
+.sobre-numeros {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.numero-item strong {
+  display: block;
+  font-family: "Bangers", cursive;
+  font-size: 2rem;
+  color: var(--cor-primaria);
+  letter-spacing: 1px;
+}
+
+.numero-item span {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.sobre-imagem {
+  position: relative;
+}
+
+.sobre-imagem img {
+  width: 100%;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-forte);
+  transition: var(--transicao);
+}
+
+.sobre-imagem img:hover {
+  transform: scale(1.02);
+}
+
+.sobre-badge {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  background: var(--cor-primaria);
+  color: white;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  box-shadow: var(--sombra);
+  transform: rotate(5deg);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* =============================================
+   CARDS DE SERVIÇOS/PRODUTOS
+   ============================================= */
+.cards {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 0;
+}
+
+.card {
+  background: var(--cor-branco);
+  border-radius: var(--raio);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  transition: var(--transicao);
+  cursor: pointer;
+  border-top: 4px solid var(--cor-primaria);
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: var(--sombra-forte);
+}
+
+.card-img-wrap {
+  overflow: hidden;
+  height: 190px;
+}
+
+.card img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  transition: var(--transicao);
+  display: block;
+}
+
+.card:hover img {
+  transform: scale(1.1);
+}
+
+.card-content {
+  padding: 18px;
+}
+
+.card-content h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--cor-texto);
+}
+
+.card-content p {
+  font-size: 0.88rem;
+  color: #777;
+  margin-bottom: 12px;
+}
+
+.preco {
+  color: var(--cor-primaria);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.card-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(200, 16, 46, 0.1);
+  color: var(--cor-primaria);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(200, 16, 46, 0.2);
+}
+
+/* =============================================
+   FILTROS
+   ============================================= */
+.filtros {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.filtro-btn {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.65);
+  padding: 8px 22px;
+  border-radius: 30px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.filtro-btn:hover,
+.filtro-btn.ativo {
+  background: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+  color: white;
+}
+
+/* =============================================
+   BANNER DESTAQUE
+   ============================================= */
+.banner-destaque {
+  background: linear-gradient(135deg, var(--cor-primaria), #8b0000);
+  padding: 70px 20px;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Elemento decorativo do banner - listras de barbearia */
+.banner-destaque::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 20px,
+    rgba(255, 255, 255, 0.03) 20px,
+    rgba(255, 255, 255, 0.03) 40px
+  );
+  pointer-events: none;
+}
+
+.banner-content h2 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.banner-content p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+/* =============================================
+   SEÇÃO CONTATO
+   ============================================= */
+.contato-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.info-item {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  align-items: flex-start;
+}
+
+.info-icone {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.info-item strong {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 3px;
+  color: var(--cor-primaria);
+}
+
+.info-item p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.contato-form h3 {
+  font-family: "Bangers", cursive;
+  font-size: 1.8rem;
+  color: var(--cor-primaria);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.95rem;
+  transition: var(--transicao);
+}
+
+.form input::placeholder,
+.form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.form input:focus,
+.form textarea:focus {
+  border-color: var(--cor-primaria);
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.2);
+}
+
+.form-status {
+  margin-top: 12px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  min-height: 22px;
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+.site-footer {
+  background: #050505;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 35px 20px;
+  border-top: 3px solid var(--cor-primaria);
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.footer-logo {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+.footer-redes {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-redes a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: var(--transicao);
+}
+
+.footer-redes a:hover {
+  color: var(--cor-primaria);
+  transform: scale(1.2);
+}
+
+/* =============================================
+   BOTÃO ADICIONAR (dentro dos cards)
+   ============================================= */
+.btn-adicionar {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--cor-primaria), #8b0000);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+.btn-adicionar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(200, 16, 46, 0.45);
+}
+
+.btn-adicionar:active {
+  transform: scale(0.97);
+}
+
+/* =============================================
+   ANIMAÇÕES
+   ============================================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flutuar {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-18px); }
+}
+
+.card {
+  animation: fadeUp 0.5s ease both;
+}
+
+/* =============================================
+   RESPONSIVO - CELULAR
+   (regras que entram em telas menores que 768px)
+   ============================================= */
+@media (max-width: 768px) {
+
+  /* Esconde logo flutuante no celular */
+  .hero-logo-flutuante {
+    display: none;
+  }
+
+  /* Título menor */
+  .hero h1 {
+    font-size: 2.4rem;
+  }
+
+  /* Mostra o botão hambúrguer */
+  .menu-toggle {
+    display: block;
+  }
+
+  /* Esconde o menu inicialmente no celular */
+  .nav-list {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 20px;
+    box-shadow: var(--sombra);
+    gap: 15px;
+    z-index: 999;
+  }
+
+  /* Quando o menu estiver aberto, mostra */
+  .nav-list.aberto {
+    display: flex;
+  }
+
+  /* Seção sobre: uma coluna */
+  .sobre-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .sobre-badge {
+    display: none;
+  }
+
+  .sobre-numeros {
+    gap: 15px;
+  }
+
+  /* Contato: uma coluna */
+  .contato-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  h2 {
+    font-size: 2.2rem;
+  }
+
+  .banner-content h2 {
+    font-size: 1.8rem;
+  }
+
+   
+/* =========================================
+   FIX MOBILE - TELA MEXENDO
+   ========================================= */
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Corrige viewport no celular */
+.hero {
+  min-height: 90dvh !important;
+  height: auto !important;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Corrige painel do carrinho */
+.carrinho-painel {
+  min-height: 100dvh;
+  height: 100dvh;
+  max-width: 100%;
+}
+
+/* Corrige imagens */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+/* Evita elementos ultrapassarem largura */
+section,
+div,
+main,
+header,
+footer {
+  max-width: 100%;
+}
+
+/* Corrige scroll lateral no Android */
+body {
+  overscroll-behavior-x: none;
+  touch-action: pan-y;
+}
+
+/* Remove highlight azul ao tocar */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+   /* =========================================
+   FIX MAPA MOBILE - TELA TRAVADA
+   ========================================= */
+
+#mapas {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 300px;
+  border: 0;
+  border-radius: 16px;
+  display: block;
+}
+
+/* Impede qualquer scroll lateral */
+html,
+body {
+  overflow-x: hidden !important;
+  width: 100%;
+}
+
+/* Garante que nada ultrapasse a tela */
+.contato-info,
+.info-item,
+.container,
+.contato-grid {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Corrige bug do iframe no Android */
+iframe {
+  max-width: 100% !important;
+}
+
+
+}
