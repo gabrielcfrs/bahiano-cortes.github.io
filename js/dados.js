@@ -74,7 +74,7 @@ const ITENS = [
     preco: "R$ 70,00",
     precoNum: 70.00,
     categoria: "combos",
-    imagem: "../img/COMBO.png"
+    imagem: "../img/combo.png"
   },{
     nome: "Barba",
     descricao: "Barba, alimento ideal para seu visual.",
